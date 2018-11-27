@@ -8,6 +8,7 @@ pub struct Voxel {
 }
 
 impl Voxel {
+
     /// creates a new voxel at given location with color
     pub fn new(factory: &mut three::Factory, loc: (u8, u8, u8), color: u32) -> Self {
         let group = factory.group();
@@ -19,7 +20,7 @@ impl Voxel {
         let mesh = {
             let geometry = three::Geometry::cuboid(1.0, 1.0, 1.0);
             let material = three::material::Lambert {
-                color: 0xF8D790,
+                color: color,
                 flat: false,
             };
             factory.mesh(geometry, material)
@@ -30,4 +31,5 @@ impl Voxel {
 
         Voxel { group, loc }
     }
+    
 }

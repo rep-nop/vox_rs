@@ -2,8 +2,9 @@ use three::{
     Object,
     Key,
 };
-use std::collections::HashMap;
-use vox_utils::voxel::Voxel;
+use vox_utils::{
+    chunk::Chunk,
+};
 
 // consts
 const CAMERA_MOVE: f32 = 0.5;
@@ -17,10 +18,11 @@ pub struct GameState {
 
     pub light: three::light::Point,
 
-    pub voxels: HashMap<(i32, i32, i32), Voxel>,
+    pub chunks: Vec<Chunk>,
 }
 
 impl GameState {
+
     pub fn new() -> Self {
         // init the window
         let mut win = three::Window::new("Voxel lads");
@@ -38,9 +40,10 @@ impl GameState {
         light.set_position([0.0, 15.0, 5.0]);
         win.scene.add(&light);
 
-        let voxels: HashMap<(i32, i32, i32), Voxel> = HashMap::new();
+        // the chunks
+        let chunks: Vec<Chunk> = Vec::new();
 
-        GameState { win, cam, cam_pos, light, voxels }
+        GameState { win, cam, cam_pos, light, chunks }
     }
 
     pub fn handle_input(&mut self) {
@@ -64,4 +67,5 @@ impl GameState {
         let new = self.cam_pos;
         self.cam.set_position([new.0, new.1, new.2]);
     }
+    
 }
