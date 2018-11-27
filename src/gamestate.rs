@@ -2,6 +2,11 @@ use three::{
     Object,
     Key,
 };
+use std::collections::HashMap;
+use vox_utils::voxel::Voxel;
+
+// consts
+const CAMERA_MOVE: f32 = 0.5;
 
 // holds camera info
 pub struct GameState {
@@ -11,6 +16,8 @@ pub struct GameState {
     pub cam_pos: (f32, f32, f32),
 
     pub light: three::light::Point,
+
+    pub voxels: HashMap<(i32, i32, i32), Voxel>,
 }
 
 impl GameState {
@@ -19,31 +26,34 @@ impl GameState {
         let mut win = three::Window::new("Voxel lads");
         win.scene.background = three::Background::Color(0xC6F0FF);
 
-        let cam_pos = (0.0, 0.0, 0.0);
+        let cam_pos = (0.0, 0.0, 10.0);
 
         // init the cam
-        let cam = win.factory.perspective_camera(60.0, 0.1 .. 100.0);
+        let cam = win.factory.perspective_camera(60.0, 0.1 .. 50.0);
         cam.set_position([cam_pos.0, cam_pos.1, cam_pos.2]);
         win.scene.add(&cam);
 
+        // init the light
         let light = win.factory.point_light(0xFFFFFF, 0.5);
-        light.set_position([0.0, 15.0, 0.0]);
+        light.set_position([0.0, 15.0, 5.0]);
         win.scene.add(&light);
 
-        GameState { win, cam, cam_pos, light }
+        let voxels: HashMap<(i32, i32, i32), Voxel> = HashMap::new();
+
+        GameState { win, cam, cam_pos, light, voxels }
     }
 
     pub fn handle_input(&mut self) {
         let input = self.win.input.keys_hit();
         for key_press in input {
             match key_press {
-                Key::W => { self.cam_pos.2 += 0.1; },
-                Key::S => { self.cam_pos.2 -= 0.1; },
-                Key::D => { self.cam_pos.0 += 0.1; },
-                Key::A => { self.cam_pos.0 -= 0.1; },
+                Key::W => { self.cam_pos.2 -= CAMERA_MOVE; },
+                Key::S => { self.cam_pos.2 += CAMERA_MOVE; },
+                Key::D => { self.cam_pos.0 += CAMERA_MOVE; },
+                Key::A => { self.cam_pos.0 -= CAMERA_MOVE; },
 
-                Key::Space => { self.cam_pos.1 += 0.1; },
-                Key::LControl => { self.cam_pos.1 -= 0.1; },
+                Key::Space => { self.cam_pos.1 += CAMERA_MOVE; },
+                Key::LControl => { self.cam_pos.1 -= CAMERA_MOVE; },
 
                 _ => {},
             }
@@ -51,6 +61,7 @@ impl GameState {
     }
 
     pub fn update(&mut self) {
-        
+        let new = self.cam_pos;
+        self.cam.set_position([new.0, new.1, new.2]);
     }
 }
