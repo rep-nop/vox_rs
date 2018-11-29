@@ -1,17 +1,18 @@
 // namespace
+use crate::Vec3;
 use three::Object;
 
 /// represents a single voxel
 pub struct Voxel {
     pub group: three::Group,
-    pub loc: (u8, u8, u8),
+    pub loc: Vec3<u8>,
 }
 
 impl Voxel {
-
     /// creates a new voxel at given location with color
-    pub fn new(factory: &mut three::Factory, loc: (u8, u8, u8), color: u32) -> Self {
+    pub fn new(factory: &mut three::Factory, loc: impl Into<Vec3<u8>>, color: u32) -> Self {
         let group = factory.group();
+        let loc = loc.into();
 
         if color > 0xFFFFFF {
             panic!("invalid color!");
@@ -27,9 +28,8 @@ impl Voxel {
         };
 
         group.add(&mesh);
-        group.set_position([loc.0 as f32, loc.1 as f32, loc.2 as f32]);
+        group.set_position([loc.x as f32, loc.y as f32, loc.z as f32]);
 
         Voxel { group, loc }
     }
-    
 }
