@@ -9,9 +9,24 @@ mod gamestate;
 use gamestate::GameState;
 use vox_utils::{chunk::ChunkBuilder, Color};
 
-const RED: u32 = Color::new(None, 0xFF, 0x00, 0x00);
-const BLUE: u32 = Color::new(None, 0x00, 0xFF, 0x00);
-const GREEN: u32 = Color::new(None, 0x00, 0x00, 0xFF);
+const RED: Color = Color {
+    a: 0x00,
+    r: 0xFF,
+    g: 0x00,
+    b: 0x00,
+};
+const GREEN: Color = Color {
+    a: 0x00,
+    r: 0x00,
+    g: 0xFF,
+    b: 0x00,
+};
+const BLUE: Color = Color {
+    a: 0x00,
+    r: 0x00,
+    g: 0x00,
+    b: 0xFF,
+};
 
 fn main() {
     let mut gs = GameState::new();

@@ -1,4 +1,4 @@
-use crate::Vec3;
+use crate::{Color, Vec3};
 use std::collections::HashMap;
 use three::Object;
 use voxel::Voxel;
@@ -28,7 +28,7 @@ impl Chunk {
         &mut self,
         factory: &mut three::Factory,
         loc: impl Into<Vec3<u8>>,
-        color: u32,
+        color: Color,
     ) {
         let loc = loc.into();
         let vox = Voxel::new(factory, loc, color);
@@ -63,7 +63,7 @@ impl<'a> ChunkBuilder<'a> {
         }
     }
 
-    pub fn with_voxel(mut self, loc: impl Into<Vec3<u8>>, color: u32) -> ChunkBuilder<'a> {
+    pub fn with_voxel(mut self, loc: impl Into<Vec3<u8>>, color: Color) -> ChunkBuilder<'a> {
         let loc = loc.into();
         self.voxels
             .insert(loc, Voxel::new(&mut self.factory, loc, color));

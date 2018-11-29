@@ -28,10 +28,10 @@ pub struct Color {
 impl Color {
     pub fn new(alpha: impl Into<Option<u8>>, red: u8, green: u8, blue: u8) -> Color {
         Color {
-            a: alpha.into().unwrap_or(0x00),
-            r: red as u32,
-            g: green as u32,
-            b: blue as u32,
+            a: u32::from(alpha.into().unwrap_or(0x00)),
+            r: u32::from(red),
+            g: u32::from(green),
+            b: u32::from(blue),
         }
     }
 
